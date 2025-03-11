@@ -8,9 +8,11 @@ from player import Player
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        pygame.display.set_caption('Platformer')
+        pygame.display.set_caption("Platformer")
 
-        self.player = Player(500, 500)
+        self.all_sprites = pygame.sprite.Group()
+
+        self.player = Player(500, 500, self.all_sprites)
 
         self.run()
 
@@ -21,7 +23,10 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            self.player.draw(self.screen)
+            self.screen.fill((0, 0, 0))
+
+            self.all_sprites.draw(self.screen)
+            self.all_sprites.update()
 
             pygame.display.update()
 

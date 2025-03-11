@@ -2,8 +2,12 @@ import pygame
 import os
 
 
-class Player:
-    def __init__(self, x, y):
+class Player(pygame.sprite.Sprite):
+    VEL = 1
+
+    def __init__(self, x, y, group):
+        super().__init__(group)
+
         self.x = x
         self.y = y
 
@@ -20,7 +24,15 @@ class Player:
             os.path.join("assets", "images", "standing.png")
         )
 
-        self.image = self.standing
+        self.speed = pygame.Vector2()
 
-    def draw(self, win):
-        win.blit(self.image, (self.x, self.y))
+        self.image = self.standing
+        self.rect = self.image.get_rect(center=(self.x, self.y))
+
+    def update(self):
+        keys = pygame.key.get_pressed()
+
+        self.speed.x = int(keys[pygame.K_RIGHT] or keys[pygame.K_d]) - int(keys[pygame.K_LEFT] or keys[pygame.K_a])
+        self.speed.y = int(keys[pygame.K_DOWN] or keys[pygame.K_s]) - int(keys[pygame.K_UP] or keys[pygame.K_w])
+
+        self.rect.center += self.speed
